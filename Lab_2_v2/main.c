@@ -1,16 +1,15 @@
 #include "header.h"
 
 int createDynamicArray(int amountOfElementsArray);
-void printArray(int* mass, int n);
+void printOutArray(int* mass, int n);
 void fillArrayRandomNumbers(int* mass, int n, int a, int b);
-int getMinElemArray(int* mass, int n);
-int getNearestElement(int* mass, int* mass_out, int n);
-int getIndexOfNearestElement(int* mass, int n);
+int findNearestElement(int* mass, int* mass_out, int n);
+int findIndexOfNearestElement(int* mass, int n);
 int random(int n);
 int calculateArithmeticMean(int* mass, int n);
-int genOutputArray(int* mass, int n);
+int generatedOutputArray(int* mass, int n);
 
-int main(int argc, char* argv[]) {
+void main() {
 
 	setlocale(LC_ALL, "Russian");
 
@@ -18,8 +17,16 @@ int main(int argc, char* argv[]) {
 
 	printf("Лабораторная работа №2 вариант 2.\n");
 	printf("\n");
-	printf("Введите количество элементов массива -> ");
-	scanf_s("%d", &n);
+	do
+	{
+		printf("Введите количество элементов массива -> ");
+		scanf_s("%d", &n);
+		if (n <= 0) {
+			printf("Количество элементов массива должно быть больше 0 и меньше 2147483647 !!!\n\n");
+		}
+	} while (n <= 0);
+
+
 	printf("\n");
 	printf("Введите диапазон допустимых значений -> ");
 	scanf_s("%d %d", &a, &b);
@@ -27,17 +34,19 @@ int main(int argc, char* argv[]) {
 
 	int* mass = createDynamicArray(n);
 	fillArrayRandomNumbers(mass, n, a, b);
-	int* mass_out = genOutputArray(mass, n);
+	int* mass_out = generatedOutputArray(mass, n);
 
-	printArray(mass, n);
+	printOutArray(mass, n);
 	printf("\n");
 	printf("Среднее арифметическое элементов массива равно.... -> %d\n", calculateArithmeticMean(mass, n));
 	printf("\n");
-	printf("Ближайшим элементом к среднему арифметическому является число.... -> %d\n", getNearestElement(mass, mass_out, n));
+	printf("Ближайшим элементом к среднему арифметическому является число.... -> %d\n", findNearestElement(mass, mass_out, n));
 	printf("\n");
-	printf("Индекс ближайшего элемента к среднему арифметическому.... -> %d\n", getIndexOfNearestElement(mass_out, n));
+	printf("Индекс ближайшего элемента к среднему арифметическому.... -> %d\n", findIndexOfNearestElement(mass_out, n));
 	printf("\n");
-	return 0;
+
+	free(mass);
+	free(mass_out);
 }
 
 
@@ -45,22 +54,22 @@ int main(int argc, char* argv[]) {
 int createDynamicArray(int amountOfElementsArray) {
 	int* Array = (int*)malloc(amountOfElementsArray * sizeof(int));
 	if (NULL == Array) {
-		printf("OS didn't gave memory. Exiting.....\n");
+		printf("OS didn't gave memory. Reload.....\n");
 		exit(1);
-	}
-	else {
+		//system("cls");
+		//main();
+	} else {
 		return Array;
 	}
 }
 
-int getNearestElement(int* mass, int* mass_out, int n)
+int findNearestElement(int* mass, int* mass_out, int n)
 {
 	int index = 0;
 	int minElem = INT_MAX;
 	for (int i = 0; i < n; i++)
 	{
-		if (mass_out[i] < minElem)
-		{
+		if (mass_out[i] < minElem) {
 			minElem = mass_out[i];
 			if (mass_out[i] > 0) {
 				index = i;
@@ -70,14 +79,13 @@ int getNearestElement(int* mass, int* mass_out, int n)
 	return mass[index];
 }
 
-int getIndexOfNearestElement(int* mass, int n)
+int findIndexOfNearestElement(int* mass, int n)
 {
 	int index = 0;
 	int minElem = INT_MAX;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; i++) 
 	{
-		if (mass[i] < minElem)
-		{
+		if (mass[i] < minElem) {
 			minElem = mass[i];
 			if (mass[i] > 0) {
 				index = i;
@@ -85,10 +93,6 @@ int getIndexOfNearestElement(int* mass, int n)
 		}
 	}
 	return index;
-}
-
-int random(int n) {
-	return rand() % n;
 }
 
 int calculateArithmeticMean(int* mass, int n)
@@ -101,10 +105,9 @@ int calculateArithmeticMean(int* mass, int n)
 	}
 	average = summ / n;
 	return average;
-	return 0;
 }
 
-int genOutputArray(int* mass, int n)
+int generatedOutputArray(int* mass, int n)
 {
 	int* mass_out = createDynamicArray(n);
 	for (int i = 0; i < n; i++)
@@ -114,8 +117,7 @@ int genOutputArray(int* mass, int n)
 			if (mass_out[i] < 0) {
 				mass_out[i] = mass_out[i] * -1;
 			}
-		}
-		else {
+		} else {
 			mass_out[i] = mass[i] - calculateArithmeticMean(mass, n);
 			if (mass_out[i] < 0) {
 				mass_out[i] = mass_out[i] * -1;
@@ -125,34 +127,23 @@ int genOutputArray(int* mass, int n)
 	return mass_out;
 }
 
+int random(int n) {
+	return rand() % n;
+}
+
 void fillArrayRandomNumbers(int* mass, int n, int a, int b)
 {
 	for (int i = 0; i < n; i++)
 	{
 		mass[i] = random(b - a + 1) + a;
-
 	}
 }
 
-int getMinElemArray(int* mass, int n)
+void printOutArray(int* mass, int n)
 {
-	int minElem = INT_MAX;
-	for (int i = 1; i < n; i++)
-	{
-		if (mass[i] < minElem)
-		{
-			minElem = mass[i];
-		}
-	}
-	return minElem;
-}
-
-void printArray(int* mass, int n)
-{
-
 	for (int i = 0; i < n; i++)
 	{
-		fprintf(stdout, "%i\t", mass[i]);
+		printf("%i\t", mass[i]);
 	}
-	fprintf(stdout, "\n\n\n");
+	printf("\n\n\n");
 }
