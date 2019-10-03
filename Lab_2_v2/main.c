@@ -3,7 +3,6 @@
 int createDynamicArray(int amountOfElementsArray);
 void printOutArray(int* mass, int n);
 void fillArrayRandomNumbers(int* mass, int n, int a, int b);
-int findNearestElement(int* mass, int* mass_out, int n);
 int findIndexOfNearestElement(int* mass, int n);
 int random(int n);
 int calculateArithmeticMean(int* mass, int n);
@@ -40,7 +39,7 @@ void main() {
 	printf("\n");
 	printf("Среднее арифметическое элементов массива равно.... -> %d\n", calculateArithmeticMean(mass, n));
 	printf("\n");
-	printf("Ближайшим элементом к среднему арифметическому является число.... -> %d\n", findNearestElement(mass, mass_out, n));
+	printf("Ближайшим элементом к среднему арифметическому является число.... -> %d\n", mass[findIndexOfNearestElement(mass_out, n)]);
 	printf("\n");
 	printf("Индекс ближайшего элемента к среднему арифметическому.... -> %d\n", findIndexOfNearestElement(mass_out, n));
 	printf("\n");
@@ -61,22 +60,6 @@ int createDynamicArray(int amountOfElementsArray) {
 	} else {
 		return Array;
 	}
-}
-
-int findNearestElement(int* mass, int* mass_out, int n)
-{
-	int index = 0;
-	int minElem = INT_MAX;
-	for (int i = 0; i < n; i++)
-	{
-		if (mass_out[i] < minElem) {
-			minElem = mass_out[i];
-			if (mass_out[i] > 0) {
-				index = i;
-			}
-		}
-	}
-	return mass[index];
 }
 
 int findIndexOfNearestElement(int* mass, int n)
