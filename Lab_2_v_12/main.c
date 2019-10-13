@@ -1,48 +1,54 @@
 #include "header.h"
 
-int main()
+int findBlackDays();
+bool checkLeapYear(int currentYear);
 
-{
+int main() {
 
-	int M[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }, days, start, i, black = 0, year;
-	printf("Enter the day of the week on January 1 (1-mon, 2-tues, 3-wed, 4-thur, 5-frid, 6-sat, 7-sun):");
+	setlocale(LC_ALL, "Russian");
+	printf("Лабораторная работа №2 вариант 12.\n");
+
+	int arrayOfMonths[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }, start, countBlackDays = 0, currentYear;
+	printf("Введите каким днём недели является 1 Января \n (1-понедельник, 2-вторник, 3-среда, 4-четверг, 5-пятница, 6-суббота, 7-воскресенье):");
 
 	scanf_s("%d", &start);
 
-	printf("Check if the year is weighty(yes - 1, no - 0):");
+	printf("Введите год : ");
 
-	scanf_s("%d", &year);
-	if (year == 1)
+	scanf_s("%d", &currentYear);
 
-	{
-
-		M[1] = 29;
-
+	if (checkLeapYear(currentYear)) {
+		arrayOfMonths[1] = 29;
 	}
-	for (i = 0; i < 12; i++)
 
+	for (int i = 0; i < 12; i++)
 	{
-
-		for (days = 1; days <= M[i]; days++)
-
+		for (int days = 1; days <= arrayOfMonths[i]; days++)
 		{
 			printf("%d|%d ", days, start);
-
 			if (days == 13 && ((start == 2) || (start == 5)))
-
 			{
-
-				black++;
-
+				countBlackDays++;
 			}
 			start = (start % 7) + 1;
-
 		}
-
 		printf("\n\n");
-
 	}
-	printf("\nThe number of black tuesdays and fridays of the year : %d \n", black);
+	printf("\nКоличество чёрных вторников и пятниц в этом году составляет : %d \n", countBlackDays);
 	return 0;
+}
 
+int findBlackDays()
+{
+	return 0;
+}
+
+bool checkLeapYear(int currentYear)
+{
+	if ((currentYear % 400 == 0) || ((currentYear % 4 == 0) && (currentYear % 100 != 0))) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
