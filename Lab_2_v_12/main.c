@@ -6,7 +6,7 @@ bool checkLeapYear(int currentYear);
 int main() {
 
 	setlocale(LC_ALL, "Russian");
-	printf("Ћабораторна€ работа є2 вариант 12.\n");
+	printf("Ћабораторна€ работа є2 вариант 12.\n\n");
 
 	// массив мес€тцев
 	int arrayOfMonths[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -15,11 +15,13 @@ int main() {
 	// год дл€ расчЄта
 	int currentYear = 0;
 
-	printf("¬ведите каким днЄм недели €вл€етс€ 1 январ€ \n (1-понедельник, 2-вторник, 3-среда, 4-четверг, 5-п€тница, 6-суббота, 7-воскресенье):");
+	printf("¬ведите каким днЄм недели €вл€етс€ 1 январ€ \n (1-понедельник, 2-вторник, 3-среда, 4-четверг, 5-п€тница, 6-суббота, 7-воскресенье): ");
 	scanf_s("%d", &startDay);
+	printf("\n\n");
 
 	printf("¬ведите год : ");
 	scanf_s("%d", &currentYear);
+	printf("\n\n");
 
 	printf("\n оличество чЄрных вторников и п€тниц в этом году составл€ет : %d \n", findBlackDays(currentYear, arrayOfMonths, startDay));
 	return 0;
@@ -38,7 +40,7 @@ int findBlackDays(int currentYear, int* arrayOfMonths, int startDay)
 	for (int i = 0; i < 12; i++)
 	{
 		// провер€ем каждый день текущего мес€ца
-		for (int days = 0; days <= arrayOfMonths[i]; days++)
+		for (int days = 1; days <= arrayOfMonths[i]; days++)
 		{
 			printf("%d|%d ", days, startDay);
 			if (days == 13 && ((startDay == 2) || (startDay == 5)))
