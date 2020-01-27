@@ -10,12 +10,15 @@ int digitSearch(char[], int pos);
 int digitCount(char S[], int pos);
 int myAtoi(char S[], int pos);
 int searchPatern(char S[], int pos);
+int F(int a);
 
 int main()
 {
     setlocale(LC_ALL, "Russian");
     char str[] = "sdf237fdg15rhesth54gfdh67";
     char str1[] = "dd==fgd=f";
+
+    F(123456);
 
     /*int pos = 0;
     int dcount;
@@ -35,11 +38,13 @@ int main()
         pos = digitSearch(str, pos);
     }*/
 
-    int pos = 0;
-    pos = searchPatern(str1, pos);
-    printf("%s", str1);
-    printf("Индекс найденного совпадения => %d\n", pos);
-    printf("%s", str1);
+    //int pos = 0;
+    //pos = searchPatern(str1, pos);
+    //printf("%s", str1);
+    //printf("Индекс найденного совпадения => %d\n", pos);
+    //printf("%s", str1);
+
+
 
     return 0;
 }
@@ -102,4 +107,16 @@ int searchPatern(char S[], int pos)
         }
     }
     return -1;
+}
+
+int F(int a)
+{
+    int n, s,  k;
+    for (n = a, s = 0; n != 0; n = n / 10)
+    {
+        k = n % 10;
+        s = s * 10 + k;
+        printf("k => %d  s => %d \n", k, s);
+    }
+    return 0;
 }
