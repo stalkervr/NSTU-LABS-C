@@ -94,21 +94,21 @@ int myAtoi(char S[], int pos)
     return sum;
 }
 
-//int searchPatern(char S[], int pos)
-//{
-//    int i;
-//    for (i = pos; S[i] != '\0'; i++)
-//    {
-//        if (S[i] == '=' && S[i + 1] == '=')
-//        {
-//            S[i] = '*';
-//            S[i + 1] = '*';
-//            return i;
-//        }
-//    }
-//    return -1;
-//}
-//
+int searchPatern(char S[], int pos)
+{
+    int i;
+    for (i = pos; S[i] != '\0'; i++)
+    {
+        if (S[i] == '=' && S[i + 1] == '=')
+        {
+            S[i] = '*';
+            S[i + 1] = '*';
+            return i;
+        }
+    }
+    return -1;
+}
+
 //int F(int a)
 //{
 //    int n, s,  k;
