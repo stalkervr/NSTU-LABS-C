@@ -7,16 +7,9 @@ int lengthString(char string[]);
 void leftShift(char string[], int pos, int num);
 void rightShift(char string[], int pos, int num);
 void substringInsertion(char string[], char subString[], int pos);
-
-
-void replaceShort(char str[], char str1[], char str2[]);
-
-int searchShort(char A[], char B[], int pos);
-
-void replaceWrapper(char str[], char str1[], char str2[]);
-
-int substringSearch(char A[], char B[], int pos);
-
+int searchShortString(char string[], char subString[], int pos);
+int substringSearch(char string[], char subString[], int pos);
+void replaceWrapper(char string[], char subString1[], char subString2[]);
 int abs(int number);
 
 int main()
@@ -30,7 +23,6 @@ int main()
 
 	printf("Строка до замены => %s\n\n", str);
 
-	//replaceShort(str, "=", ":=");
 	replaceWrapper(str, "=", ":=");
 	replaceWrapper(str, "==", "=");
 	replaceWrapper(str, "!=", "#");
@@ -83,86 +75,12 @@ void substringInsertion(char string[], char subString[], int pos)
 	}
 }
 
-
-
-
-void replaceShort(char str[], char str1[], char str2[])
-{
-	int pos = 0;
-	int shiftPoint;
-	int deltaShift = lengthString(str1) - lengthString(str2);
-
-	while (pos != -1)
-	{
-		pos = searchShort(str, str1, pos);
-
-		if (pos == -1) break;
-
-		shiftPoint = pos + lengthString(str1);
-
-		if (deltaShift < 0)
-		{
-			rightShift(str, shiftPoint, abs(deltaShift));
-		}
-		if (deltaShift > 0)
-		{
-			leftShift(str, shiftPoint - deltaShift, deltaShift);
-		}
-
-		substringInsertion(str, str2, pos);
-
-		pos += lengthString(str1) + abs(deltaShift);
-		pos = searchShort(str, str1, pos);
-	}
-}
-
-void replaceWrapper(char str[], char str1[], char str2[])
-{
-	int pos = 0;
-	int shiftPoint;
-	int lengthStr1 = lengthString(str1);
-	int lengthStr2 = lengthString(str2);
-	int deltaShift = abs(lengthStr1 - lengthStr2);
-
-	while (pos != -1)
-	{
-
-		if (lengthStr1 == 1)
-		{
-			pos = searchShort(str, str1, pos);
-		}
-		else
-		{
-			pos = substringSearch(str, str1, pos);
-		}
-
-		if (pos == -1) break;
-
-		shiftPoint = pos + lengthStr1;
-
-		if (lengthStr1 < lengthStr2)
-		{
-			rightShift(str, shiftPoint, abs(deltaShift));
-		}
-		if (lengthStr1 > lengthStr2)
-		{
-			leftShift(str, shiftPoint - deltaShift, deltaShift);
-		}
-
-		substringInsertion(str, str2, pos);
-
-		pos += lengthStr1 + abs(deltaShift);
-		pos = substringSearch(str, str1, pos);
-	}
-}
-
-
-int searchShort(char A[], char B[], int pos)
+int searchShortString(char string[], char subString[], int pos)
 {
 	int i, j;
 	int lengthA, lengthB;
-	lengthA = lengthString(A);
-	lengthB = lengthString(B);
+	lengthA = lengthString(string);
+	lengthB = lengthString(subString);
 	// поиск построки "="
 
 	// проверка если длинна искомой строки больше строки для поиска её там точно нет
@@ -175,20 +93,20 @@ int searchShort(char A[], char B[], int pos)
 	{
 		for (j = 0; j < lengthB; j++)
 		{
-			if (A[i + j] != B[j])// переход к следующему символу строки В(на след итерацию(j++) только если условие ложно 
+			if (string[i + j] != subString[j])// переход к следующему символу строки В(на след итерацию(j++) только если условие ложно 
 			{
 				break;
 			}
 		}
 		if (j == lengthB)
 		{
-			if ( A[i] == '=' &&
-				 A[i-1] != '=' && 
-				 A[i+1] != '=' && 
-				 A[i-1] != '!' && 
-				 A[i-1] != '+' &&
-				 A[i-1] != '-' &&
-				 A[i-1] != 'a')
+			if ( string[i] == '=' &&
+				 string[i-1] != '=' && 
+				 string[i+1] != '=' && 
+				 string[i-1] != '!' && 
+				 string[i-1] != '+' &&
+				 string[i-1] != '-' &&
+				 string[i-1] != 'a')
 			{
 				return i;
 			}
@@ -197,12 +115,13 @@ int searchShort(char A[], char B[], int pos)
 	
 	return -1;
 }
-int substringSearch(char A[], char B[], int pos)
+
+int substringSearch(char string[], char subString[], int pos)
 {
 	int i, j;
 	int lengthA, lengthB;
-	lengthA = lengthString(A);
-	lengthB = lengthString(B);
+	lengthA = lengthString(string);
+	lengthB = lengthString(subString);
 	// поиск построки "="
 
 	// проверка если длинна искомой строки больше строки для поиска её там точно нет
@@ -216,7 +135,7 @@ int substringSearch(char A[], char B[], int pos)
 	{
 		for (j = 0; j < lengthB; j++)
 		{
-			if (A[i + j] != B[j])// переход к следующему символу строки В(на след итерацию(j++) только если условие ложно 
+			if (string[i + j] != subString[j])// переход к следующему символу строки В(на след итерацию(j++) только если условие ложно 
 			{
 				break;
 			}
@@ -229,7 +148,49 @@ int substringSearch(char A[], char B[], int pos)
 	
 	return -1;
 }
+
+void replaceWrapper(char string[], char subString1[], char subString2[])
+{
+	int pos = 0;
+	int shiftPoint;
+	int lengthStr1 = lengthString(subString1);
+	int lengthStr2 = lengthString(subString2);
+	int deltaShift = abs(lengthStr1 - lengthStr2);
+
+	while (pos != -1)
+	{
+
+		if (lengthStr1 == 1)
+		{
+			pos = searchShortString(string, subString1, pos);
+		}
+		else
+		{
+			pos = substringSearch(string, subString1, pos);
+		}
+
+		if (pos == -1) break;
+
+		shiftPoint = pos + lengthStr1;
+
+		if (lengthStr1 < lengthStr2)
+		{
+			rightShift(string, shiftPoint, abs(deltaShift));
+		}
+		if (lengthStr1 > lengthStr2)
+		{
+			leftShift(string, shiftPoint - deltaShift, deltaShift);
+		}
+
+		substringInsertion(string, subString2, pos);
+
+		pos += lengthStr1 + abs(deltaShift);
+		pos = substringSearch(string, subString1, pos);
+	}
+}
+
 int abs(int number)
 {
 	return number < 1 ? number * (-1) : number;
 }
+
