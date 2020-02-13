@@ -23,7 +23,7 @@ int main()
     int pos = 0;
     int dcount;
     int res;
-    
+   // TODO: Переписать с do while
     while (pos != -1)
     {
         pos = digitSearch(str, pos);
