@@ -18,20 +18,20 @@ int abs(int number);
 int main()
 {
     setlocale(LC_ALL, "Russian");
-    printf("Лабораторная работа №4 вариант №5\n\n");
+    printf("  Лабораторная работа №4 вариант №5\n\n");
 
-	char searchPattern[N][M] = { "=","==","!=","a+=","a-=" };
-	char changePattern[N][M] = { ":=","=","#","a=a+","a=a-" };
-	char str[300] = "(=, ==, !=, a+=, a-=)";
+	char searchPattern[N][M] = { "=", "==", "!=", "a+=", "a-=" };
+	char changePattern[N][M] = { ":=", "=", "#", "a=a+", "a=a-" };
+	char str[100] = "(=, ==, !=, a+=, a-=)";
 
-	printf("Строка до замены => %s\n\n", str);
+	printf("  Строка до замены    => %s\n\n", str);
 
 	for (int i = 0; i < N; i++)
 	{
 		replaceWrapper(str, searchPattern[i], changePattern[i]);
 	}
 
-	printf("Строка после замены => %s\n", str);
+	printf("  Строка после замены => %s\n", str);
 
     return 0;
 }
