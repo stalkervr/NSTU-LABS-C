@@ -6,13 +6,17 @@
 int lengthString(char string[]);
 void leftShift(char string[], int pos, int num);
 void rightShift(char string[], int pos, int num);
+void substringInsertion(char string[], char subString[], int pos);
 
 
 void replaceShort(char str[], char str1[], char str2[]);
+
 int searchShort(char A[], char B[], int pos);
+
 void replaceWrapper(char str[], char str1[], char str2[]);
+
 int substringSearch(char A[], char B[], int pos);
-void substringInsertion(char A[], char B[], int pos);
+
 int abs(int number);
 
 int main()
@@ -26,8 +30,8 @@ int main()
 
 	printf("Строка до замены => %s\n\n", str);
 
-	replaceShort(str, "=", ":=");
-	//replaceWrapper(str, "=", ":=");
+	//replaceShort(str, "=", ":=");
+	replaceWrapper(str, "=", ":=");
 	replaceWrapper(str, "==", "=");
 	replaceWrapper(str, "!=", "#");
 	replaceWrapper(str, "a+=", "a=a+");
@@ -67,6 +71,88 @@ void rightShift(char string[], int pos, int num)
 	for (i = length; i >= pos; i--)
 	{
 		string[i + num] = string[i];
+	}
+}
+
+void substringInsertion(char string[], char subString[], int pos)
+{
+	int i;
+	for (i = 0; subString[i] != '\0'; i++)
+	{
+		string[pos + i] = subString[i];
+	}
+}
+
+
+
+
+void replaceShort(char str[], char str1[], char str2[])
+{
+	int pos = 0;
+	int shiftPoint;
+	int deltaShift = lengthString(str1) - lengthString(str2);
+
+	while (pos != -1)
+	{
+		pos = searchShort(str, str1, pos);
+
+		if (pos == -1) break;
+
+		shiftPoint = pos + lengthString(str1);
+
+		if (deltaShift < 0)
+		{
+			rightShift(str, shiftPoint, abs(deltaShift));
+		}
+		if (deltaShift > 0)
+		{
+			leftShift(str, shiftPoint - deltaShift, deltaShift);
+		}
+
+		substringInsertion(str, str2, pos);
+
+		pos += lengthString(str1) + abs(deltaShift);
+		pos = searchShort(str, str1, pos);
+	}
+}
+
+void replaceWrapper(char str[], char str1[], char str2[])
+{
+	int pos = 0;
+	int shiftPoint;
+	int lengthStr1 = lengthString(str1);
+	int lengthStr2 = lengthString(str2);
+	int deltaShift = abs(lengthStr1 - lengthStr2);
+
+	while (pos != -1)
+	{
+
+		if (lengthStr1 == 1)
+		{
+			pos = searchShort(str, str1, pos);
+		}
+		else
+		{
+			pos = substringSearch(str, str1, pos);
+		}
+
+		if (pos == -1) break;
+
+		shiftPoint = pos + lengthStr1;
+
+		if (lengthStr1 < lengthStr2)
+		{
+			rightShift(str, shiftPoint, abs(deltaShift));
+		}
+		if (lengthStr1 > lengthStr2)
+		{
+			leftShift(str, shiftPoint - deltaShift, deltaShift);
+		}
+
+		substringInsertion(str, str2, pos);
+
+		pos += lengthStr1 + abs(deltaShift);
+		pos = substringSearch(str, str1, pos);
 	}
 }
 
@@ -111,70 +197,6 @@ int searchShort(char A[], char B[], int pos)
 	
 	return -1;
 }
-
-void replaceShort(char str[], char str1[], char str2[])
-{
-	int pos = 0;
-	int shiftPoint;
-	int deltaShift = lengthString(str1) - lengthString(str2);
-
-	while (pos != -1)
-	{
-		pos = searchShort(str, str1, pos);
-
-		if (pos == -1) break;
-
-		shiftPoint = pos + lengthString(str1);
-
-		if (deltaShift < 0)
-		{
-			rightShift(str, shiftPoint, abs(deltaShift));
-		}
-		if (deltaShift > 0)
-		{
-			leftShift(str, shiftPoint - deltaShift, deltaShift);
-		}
-
-		substringInsertion(str, str2, pos);
-
-		pos += lengthString(str1) + abs(deltaShift);
-		pos = searchShort(str, str1, pos);
-	}
-}
-
-void replaceWrapper(char str[], char str1[], char str2[])
-{
-	int pos = 0;
-	int shiftPoint;
-	int lengthStr1 = lengthString(str1);
-	int lengthStr2 = lengthString(str2);
-	int deltaShift = abs(lengthStr1 - lengthStr2);
-
-	while (pos != -1)
-	{
-		pos = substringSearch(str, str1, pos);
-
-		if (pos == -1) break;
-
-		shiftPoint = pos + lengthStr1;
-
-		if (lengthStr1 < lengthStr2)
-		{
-			rightShift(str, shiftPoint, abs(deltaShift));
-		}
-		if (lengthStr1 > lengthStr2)
-		{
-			leftShift(str, shiftPoint - deltaShift, deltaShift);
-		}
-
-		substringInsertion(str, str2, pos);
-
-		pos += lengthStr1 + abs(deltaShift);
-		pos = substringSearch(str, str1, pos);
-	}
-}
-
-
 int substringSearch(char A[], char B[], int pos)
 {
 	int i, j;
@@ -207,16 +229,6 @@ int substringSearch(char A[], char B[], int pos)
 	
 	return -1;
 }
-
-void substringInsertion(char A[], char B[], int pos)
-{
-	int i;
-	for (i = 0; B[i] != '\0'; i++)
-	{
-		A[pos + i] = B[i];
-	}
-}
-
 int abs(int number)
 {
 	return number < 1 ? number * (-1) : number;
