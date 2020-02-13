@@ -1,5 +1,8 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 
+# define N 5
+# define M 5
+
 #include <stdio.h>
 #include <locale.h>
 
@@ -17,17 +20,16 @@ int main()
     setlocale(LC_ALL, "Russian");
     printf("Лабораторная работа №4 вариант №5\n\n");
 
-	char searchPattern[5][5] = { "=","==","!=","a+=","a-=" };
-	char changePattern[5][5] = { ":=","=","#","a=a+","a=a-" };
-	char str[300] = "(=, ==, !=, a+=, a-=, =)";
+	char searchPattern[N][M] = { "=","==","!=","a+=","a-=" };
+	char changePattern[N][M] = { ":=","=","#","a=a+","a=a-" };
+	char str[300] = "(=, ==, !=, a+=, a-=)";
 
 	printf("Строка до замены => %s\n\n", str);
 
-	replaceWrapper(str, "=", ":=");
-	replaceWrapper(str, "==", "=");
-	replaceWrapper(str, "!=", "#");
-	replaceWrapper(str, "a+=", "a=a+");
-	replaceWrapper(str, "a-=", "a=a-");
+	for (int i = 0; i < N; i++)
+	{
+		replaceWrapper(str, searchPattern[i], changePattern[i]);
+	}
 
 	printf("Строка после замены => %s\n", str);
 
