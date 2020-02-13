@@ -3,19 +3,17 @@
 #include <stdio.h>
 #include <locale.h>
 
-void replaceShort(char str[], char str1[], char str2[]);
-
-int searchShort(char A[], char B[], int pos);
-
-void replaceWrapper(char str[], char str1[], char str2[]);
-
-int abs(int number);
-
 int lengthString(char string[]);
-void leftShift(char A[], int pos, int num);
-void rightShift(char A[], int pos, int num);
+void leftShift(char string[], int pos, int num);
+void rightShift(char string[], int pos, int num);
+
+
+void replaceShort(char str[], char str1[], char str2[]);
+int searchShort(char A[], char B[], int pos);
+void replaceWrapper(char str[], char str1[], char str2[]);
 int substringSearch(char A[], char B[], int pos);
 void substringInsertion(char A[], char B[], int pos);
+int abs(int number);
 
 int main()
 {
@@ -29,21 +27,49 @@ int main()
 	printf("Строка до замены => %s\n\n", str);
 
 	replaceShort(str, "=", ":=");
+	//replaceWrapper(str, "=", ":=");
 	replaceWrapper(str, "==", "=");
 	replaceWrapper(str, "!=", "#");
 	replaceWrapper(str, "a+=", "a=a+");
 	replaceWrapper(str, "a-=", "a=a-");
-	//printf("Найден символ = его индекс -> %d", searchShort(str,"=",0));
 
 	printf("Строка после замены => %s\n", str);
 
     return 0;
 }
 
-int abs(int number)
+int lengthString(char string[])
 {
-	return number < 1 ? number * (-1) : number;
+	int i = 0;
+	while (string[i] != '\0')
+	{
+		i++;
+	}
+	return i;
 }
+
+void leftShift(char string[], int pos, int num)
+{
+	int i;
+	for (i = pos + num; string[i] != '\0'; i++)
+	{
+		string[pos++] = string[i];
+	}
+	string[pos] = '\0';
+}
+
+void rightShift(char string[], int pos, int num)
+{
+	int i;
+	int length;
+	length = lengthString(string);
+
+	for (i = length; i >= pos; i--)
+	{
+		string[i + num] = string[i];
+	}
+}
+
 
 int searchShort(char A[], char B[], int pos)
 {
@@ -96,6 +122,8 @@ void replaceShort(char str[], char str1[], char str2[])
 	{
 		pos = searchShort(str, str1, pos);
 
+		if (pos == -1) break;
+
 		shiftPoint = pos + lengthString(str1);
 
 		if (deltaShift < 0)
@@ -118,61 +146,34 @@ void replaceWrapper(char str[], char str1[], char str2[])
 {
 	int pos = 0;
 	int shiftPoint;
-	int deltaShift = lengthString(str1) - lengthString(str2);
+	int lengthStr1 = lengthString(str1);
+	int lengthStr2 = lengthString(str2);
+	int deltaShift = abs(lengthStr1 - lengthStr2);
 
 	while (pos != -1)
 	{
 		pos = substringSearch(str, str1, pos);
 
-		shiftPoint = pos + lengthString(str1);
+		if (pos == -1) break;
 
-		if (deltaShift < 0)
+		shiftPoint = pos + lengthStr1;
+
+		if (lengthStr1 < lengthStr2)
 		{
-			rightShift(str, shiftPoint , abs(deltaShift));
+			rightShift(str, shiftPoint, abs(deltaShift));
 		}
-		if (deltaShift > 0)
+		if (lengthStr1 > lengthStr2)
 		{
 			leftShift(str, shiftPoint - deltaShift, deltaShift);
 		}
 
 		substringInsertion(str, str2, pos);
 
-		pos += lengthString(str1) + abs(deltaShift);
+		pos += lengthStr1 + abs(deltaShift);
 		pos = substringSearch(str, str1, pos);
 	}
 }
 
-int lengthString(char string[])
-{
-	int i = 0;
-	while (string[i] != '\0')
-	{
-		i++;
-	}
-	return i;
-}
-
-void leftShift(char A[], int pos, int num)
-{
-	int i;
-	for (i = pos + num; A[i] != '\0'; i++)
-	{
-		A[pos++] = A[i];
-	}
-	A[pos] = '\0';
-}
-
-void rightShift(char A[], int pos, int num)
-{
-	int i;
-	int length;
-	length = lengthString(A);
-
-	for (i = length; i >= pos; i--)
-	{
-		A[i + num] = A[i];
-	}
-}
 
 int substringSearch(char A[], char B[], int pos)
 {
@@ -216,3 +217,7 @@ void substringInsertion(char A[], char B[], int pos)
 	}
 }
 
+int abs(int number)
+{
+	return number < 1 ? number * (-1) : number;
+}
