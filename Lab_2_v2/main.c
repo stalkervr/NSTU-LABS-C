@@ -9,7 +9,7 @@ int calculateArithmeticMean(int* mass, int n);
 int generatedOutputArray(int* mass, int n);
 
 void main() {
-
+	srand(time(NULL));
 	setlocale(LC_ALL, "Russian");
 
 	int n, a, b;
