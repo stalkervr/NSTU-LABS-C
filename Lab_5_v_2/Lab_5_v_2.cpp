@@ -14,6 +14,7 @@ int* createDynamicArray(int amountOfElementsArray);
 void immersionInsertionSorting(int* arr, int amountOfElementsArray, int startIndex, int step);
 void shellSorting(int* arr, int amountOfElements);
 void bubbleSorting(int* arr, int amountOfElementsArray, int startIndex, int step);
+void sortWrapper(int amountOfElements, int leftEndOfRange, int rightEndOfRange, int step, int startIndex);
 
 
 int main()
@@ -30,10 +31,10 @@ int main()
 	{
 		printf("Введите количество элементов массива -> ");
 		scanf_s("%d", &amountOfElements);
-		if (amountOfElements <= 0 || amountOfElements >= 4294967294) {
-			printf("Количество элементов массива должно быть больше 0 и меньше 4 294 967 295 !!!\n\n");
+		if (amountOfElements <= 0 || amountOfElements >= 2147483646) {
+			printf("Количество элементов массива должно быть больше 0 и меньше 2 147 483 646 !!!\n\n");
 		}
-	} while (amountOfElements <= 0 || amountOfElements >= 4294967294);
+	} while (amountOfElements <= 0 || amountOfElements >= 2147483646);
 	printf("\n");
 
 	do
@@ -50,29 +51,46 @@ int main()
 	{
 		printf("Введите стартовый индекс и шаг предварительной сортировки -> ");
 		scanf_s("%d %d", &startIndex, &step);
-		if (startIndex <= 0) {
+		if (startIndex <= 0 || step <= 1) {
 			printf("Стартовый индекс должен быть 1 или более !!!\n\n");
 		}
-	} while (startIndex <= 0);
+	} while (startIndex <= 0 || step <= 1);
 	printf("\n");
 
-	//------------------------------------------
+	//int* mass = createDynamicArray(amountOfElements);
+	//// заполняем массив случайными числами
+	//fillArrayRandomNumbers(mass, amountOfElements, leftEndOfRange, rightEndOfRange);
+	//printOutArray(mass, amountOfElements);
+	//// выполняем предварительную сортировку
+	//immersionInsertionSorting(mass, amountOfElements, startIndex, step);
+	//printOutArray(mass, amountOfElements);
+	//// сортировка Шелла
+	//shellSorting(mass, amountOfElements);
+	//printOutArray(mass, amountOfElements);
+	//// очистка памяти
+	//free(mass);
 	
-	int* mass = createDynamicArray(amountOfElements);
-	fillArrayRandomNumbers(mass, amountOfElements, leftEndOfRange, rightEndOfRange);
-	printOutArray(mass, amountOfElements);
-	immersionInsertionSorting(mass, amountOfElements, startIndex, step);
-	printOutArray(mass, amountOfElements);
-	shellSorting(mass, amountOfElements);
-	printOutArray(mass, amountOfElements);
-	free(mass);
-	
-	//------------------------------------------
-
+	sortWrapper(amountOfElements, leftEndOfRange, rightEndOfRange, step, startIndex);
 
 	system("pause");
 
 	return 0;
+}
+
+void sortWrapper(int amountOfElements, int leftEndOfRange, int rightEndOfRange, int step, int startIndex)
+{
+	int* mass = createDynamicArray(amountOfElements);
+	// заполняем массив случайными числами
+	fillArrayRandomNumbers(mass, amountOfElements, leftEndOfRange, rightEndOfRange);
+	printOutArray(mass, amountOfElements);
+	// выполняем предварительную сортировку
+	immersionInsertionSorting(mass, amountOfElements, startIndex, step);
+	printOutArray(mass, amountOfElements);
+	// сортировка Шелла
+	shellSorting(mass, amountOfElements);
+	printOutArray(mass, amountOfElements);
+	// очистка памяти
+	free(mass);
 }
 
 //----- Сортировка Шелла
@@ -102,7 +120,7 @@ void immersionInsertionSorting(int* arr, int amountOfElementsArray, int startInd
 	for (int i = startIndex; i < amountOfElementsArray; i += step)// Пока не достигли " дна" или меньшего себя
 	{
 		//printf("i => %d\n", i);
-		for (int k = i + step; k != 0 && (k - step) > 0 && arr[k] < arr[k - step]; k -= step)
+		for (int k = i + step; k != 0 && (k - step) > 0 && k < amountOfElementsArray && arr[k] < arr[k - step]; k -= step)
 		{
 			int temp = arr[k];
 			arr[k] = arr[k - step];
@@ -135,10 +153,9 @@ void bubbleSorting(int* arr, int amountOfElementsArray, int startIndex, int step
 int* createDynamicArray(int amountOfElementsArray) {
 	int* Array = (int*)malloc(amountOfElementsArray * sizeof(int));
 	if (NULL == Array) {
-		printf("OS didn't gave memory. Exiting.....\n");
+		printf("ОС отказала в выделении памяти. Выход из программы.....\n");
+		system("pause");
 		exit(1);
-		//system("cls");
-		//main();
 	}
 	else {
 		return Array; // указатель на начало массива
@@ -161,7 +178,7 @@ void printOutArray(int* arr, int amountOfElementsArray)
 {
 	for (int i = 0; i < amountOfElementsArray; i++)
 	{
-		if (i != 0 && i % 10 == 0)
+		if (i % 10 == 0)
 		{
 			printf("\n");
 		}
