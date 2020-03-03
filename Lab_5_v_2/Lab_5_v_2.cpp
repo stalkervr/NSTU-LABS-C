@@ -31,20 +31,20 @@ int main()
 	{
 		printf("Введите количество элементов массива -> ");
 		scanf_s("%d", &amountOfElements);
-		if (amountOfElements <= 0 || amountOfElements >= 2147483646) {
+		if (amountOfElements <= 0 || amountOfElements >= INT_MAX) {
 			printf("Количество элементов массива должно быть больше 0 и меньше 2 147 483 646 !!!\n\n");
 		}
-	} while (amountOfElements <= 0 || amountOfElements >= 2147483646);
+	} while (amountOfElements <= 0 || amountOfElements >= INT_MAX);
 	printf("\n");
 
 	do
 	{
 		printf("Введите диапазон допустимых значений -> ");
 		scanf_s("%d %d", &leftEndOfRange, &rightEndOfRange);
-		if (leftEndOfRange <= -2147483647 || rightEndOfRange >= 2147483646) {
+		if (leftEndOfRange <= INT_MIN || rightEndOfRange >= INT_MAX) {
 			printf("Диапазон допустимых значений должен быть больше −2 147 483 647 и меньше 2 147 483 646 !!!\n\n");
 		}
-	} while (leftEndOfRange <= -2147483647 || rightEndOfRange >= 2147483646);
+	} while (leftEndOfRange <= INT_MIN || rightEndOfRange >= INT_MAX);
 	printf("\n");
 
 	do
@@ -56,19 +56,6 @@ int main()
 		}
 	} while (startIndex <= 0 || step <= 1);
 	printf("\n");
-
-	//int* mass = createDynamicArray(amountOfElements);
-	//// заполняем массив случайными числами
-	//fillArrayRandomNumbers(mass, amountOfElements, leftEndOfRange, rightEndOfRange);
-	//printOutArray(mass, amountOfElements);
-	//// выполняем предварительную сортировку
-	//immersionInsertionSorting(mass, amountOfElements, startIndex, step);
-	//printOutArray(mass, amountOfElements);
-	//// сортировка Шелла
-	//shellSorting(mass, amountOfElements);
-	//printOutArray(mass, amountOfElements);
-	//// очистка памяти
-	//free(mass);
 	
 	sortWrapper(amountOfElements, leftEndOfRange, rightEndOfRange, step, startIndex);
 
@@ -79,18 +66,18 @@ int main()
 
 void sortWrapper(int amountOfElements, int leftEndOfRange, int rightEndOfRange, int step, int startIndex)
 {
-	int* mass = createDynamicArray(amountOfElements);
+	int* arr = createDynamicArray(amountOfElements);
 	// заполняем массив случайными числами
-	fillArrayRandomNumbers(mass, amountOfElements, leftEndOfRange, rightEndOfRange);
-	printOutArray(mass, amountOfElements);
+	fillArrayRandomNumbers(arr, amountOfElements, leftEndOfRange, rightEndOfRange);
+	printOutArray(arr, amountOfElements);
 	// выполняем предварительную сортировку
-	immersionInsertionSorting(mass, amountOfElements, startIndex, step);
-	printOutArray(mass, amountOfElements);
+	immersionInsertionSorting(arr, amountOfElements, startIndex, step);
+	printOutArray(arr, amountOfElements);
 	// сортировка Шелла
-	shellSorting(mass, amountOfElements);
-	printOutArray(mass, amountOfElements);
+	shellSorting(arr, amountOfElements);
+	printOutArray(arr, amountOfElements);
 	// очистка памяти
-	free(mass);
+	free(arr);
 }
 
 //----- Сортировка Шелла
@@ -119,14 +106,11 @@ void immersionInsertionSorting(int* arr, int amountOfElementsArray, int startInd
 
 	for (int i = startIndex; i < amountOfElementsArray; i += step)// Пока не достигли " дна" или меньшего себя
 	{
-		//printf("i => %d\n", i);
 		for (int k = i + step; k != 0 && (k - step) > 0 && k < amountOfElementsArray && arr[k] < arr[k - step]; k -= step)
 		{
 			int temp = arr[k];
 			arr[k] = arr[k - step];
 			arr[k - step] = temp;
-			//printf(" k => %d", k);
-			//printf(" k-step => %d\n", k - step);
 		}
 	}
 }
