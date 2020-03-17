@@ -150,11 +150,11 @@ int random(int number) {
 	return rand() % number;
 }
 
-void fillArrayRandomNumbers(int* arr, int amountOfElementsArray, int a, int b)
+void fillArrayRandomNumbers(int* arr, int amountOfElementsArray, int leftEndOfRange, int rightEndOfRange)
 {
 	for (int i = 0; i < amountOfElementsArray; i++)
 	{
-		arr[i] = random(b - a + 1) + a;
+		arr[i] = random(rightEndOfRange - leftEndOfRange + 1) + leftEndOfRange;
 	}
 }
 
