@@ -25,7 +25,7 @@ int main()
 
 	students = load_test_data(students, top);
 
-	start(students,top);
+	start(students, top);
 
 	free(students);
 
@@ -50,26 +50,27 @@ void start(struct human* students, int &top)
 						data_print(students, top);
 						break;
 			case SHIFT_A: 
-						printf("You press key Shift+A. \n The function of adding a new record has been launched...\n");
+						printf("You press key Shift+A.\n\n The function of adding a new record has been launched...\n");
 						students = data_add_to_array(students, top);
 						system("cls");
 						data_print(students, top);
 						break;
 			case SHIFT_D: 
-						printf("You press key Shift+D.\n The function of deleting a record by number has been launched...\n");
+						printf("You press key Shift+D.\n\n The function of deleting a record by number has been launched...\n");
 						students = data_remove_from_array(students, top);
 						system("cls");
 						data_print(students, top);
 						break;
-			case SHIFT_I: printf("You press key Shift+I.\n ");
+			case SHIFT_I:
 						system("cls");
 						info();
 						break;
 			case SHIFT_Q: 
-						printf("You press key Shift+Q.\n The function of searching for a record by the name of the student has been launched...\n");
+						printf("You press key Shift+Q.\n\n The function of searching for a record by the surname of the student has been launched...\n");
 						data_search(students, top);
 						break;
-			case SHIFT_S: printf("You press key Shift+S.\n Sort by student last name launched...\n");
+			case SHIFT_S: 
+						printf("You press key Shift+S.\n\n Sort by student last name launched...\n");
 						data_bubble_sort(students, top);
 						data_print(students, top);
 						break;
@@ -131,7 +132,7 @@ size_t data_search(struct human* students, int &top)
 	printf("Enter student surname for search entry: -> ");
 	scanf("%s", &search_name);
 	//size_t tmp;
-	while (i < top-1)
+	while (i < top)
 	{
 		size_t tmp = (strcmp(students[i].surname, search_name));
 		if (tmp != 0)
@@ -139,7 +140,7 @@ size_t data_search(struct human* students, int &top)
 			i++;
 		}
 		else {
-			printf("First matches found in string %d. \nFor delete record press Shift+D and enter %d \n\n", i+1, i+1);
+			printf("First matches found in string %d. \n\nFor delete record press Shift+D and enter %d \n\n", i+1, i+1);
 			return i;
 		}
 	}
@@ -178,7 +179,7 @@ struct human* data_remove_from_array(struct human* students, int& top)
 	size_t index;
 	printf("Enter record number to delete : ->  ");
 	scanf("%d", &index);
-	for (int i = index; i < top; i++)
+	for (size_t i = index; i < top; i++)
 	{
 		students[i - 1] = students[i];
 	}
